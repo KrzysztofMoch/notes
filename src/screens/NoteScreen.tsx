@@ -6,7 +6,7 @@ const NoteScreen = () => {
     // ------------------------- Render Functions -------------------------
 
     <View>
-      <Text>NoteScreen</Text>
+      <Text>Note Screen</Text>
     </View>
   );
 };
