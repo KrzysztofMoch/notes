@@ -6,4 +6,7 @@ const APP_THEMES = {
     }
 }
 
+type APP_THEMES_TYPE = 'BLUE';
+
+export type { APP_THEMES_TYPE }
 export default APP_THEMES;
