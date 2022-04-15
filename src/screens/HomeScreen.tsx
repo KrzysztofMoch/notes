@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import Animated, {
   Easing,
@@ -13,66 +13,133 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import APP_THEMES from '../common/themes';
 import APP_COLORS from '../common/colors';
 import GLOBAL_STYLES from '../common/globalStyles';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 
-const HomeScreen: React.FC = () => {
+const HomeScreen = () => {
   // this will be dynamically changed in future
   const THEME = 'BLUE';
+
   const navigation = useNavigation();
+
+  const isPressed = useSharedValue<boolean>(false);
+  const iconRotation = useSharedValue<number>(0);
+
+  // MoveIn - The button shrinks and finally animationMode change to Stand
+  // MoveOut - The icon disappears and the button zooms to full screen
+  // Stand - static values (small button)
+  type AnimationMode = 'MoveIn' | 'MoveOut' | 'Stand';
+  const animationMode = useSharedValue<AnimationMode>('Stand');
+
+  // do animation when back from NoteScreen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      animationMode.value = 'MoveIn';
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  // ------------------------- Handlers -------------------------
+
+  const handlePress = () => {
+    if (isPressed.value) {
+      return;
+    }
+
+    isPressed.value = true;
+
+    iconRotation.value = withRepeat(withTiming(360, { duration: 400 }), 2, true, () => {
+      isPressed.value = false;
+      animationMode.value = 'MoveOut';
+    });
+  };
+
+  const handleEndAnimation: (finished: boolean | undefined) => void = (finished) => {
+    if (!finished) {
+      return;
+    }
+
+    if (animationMode.value === 'MoveIn') {
+      animationMode.value = 'Stand';
+    } else if (animationMode.value === 'MoveOut') {
+      navigation.navigate('Note');
+    }
+  };
+
+  // ------------------------- Animated Styles -------------------------
+
+  const rContainer = useAnimatedStyle(() => {
+    const getWidth: () => number = () => {
+      switch (animationMode.value) {
+        case 'MoveIn':
+          return withTiming(70, { duration: 700 });
+        case 'MoveOut':
+          return withTiming(SCREEN_WIDTH, { duration: 700 });
+        default:
+          return 70;
+      }
+    };
+
+    const getHeight: () => number = () => {
+      switch (animationMode.value) {
+        case 'MoveIn':
+          return withTiming(80, { duration: 700 }, (finished) =>
+            runOnJS(handleEndAnimation)(finished),
+          );
+        case 'MoveOut':
+          return withTiming(SCREEN_HEIGHT, { duration: 700 }, (finished) =>
+            runOnJS(handleEndAnimation)(finished),
+          );
+        default:
+          return 80;
+      }
+    };
+
+    const getRightPosition: () => number = () => {
+      switch (animationMode.value) {
+        case 'MoveIn':
+          return withTiming(15);
+        case 'MoveOut':
+          return withTiming(0);
+        default:
+          return 15;
+      }
+    };
+
+    const getBottomPosition: () => number = () => {
+      switch (animationMode.value) {
+        case 'MoveIn':
+          return withTiming(20);
+        case 'MoveOut':
+          return withTiming(0);
+        default:
+          return 20;
+      }
+    };
+
+    return {
+      opacity: withTiming(isPressed.value ? 0.7 : 1),
+      width: getWidth(),
+      height: getHeight(),
+      right: getRightPosition(),
+      bottom: getBottomPosition(),
+    };
+  });
+
+  const rIcon = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotateZ: `${iconRotation.value}deg` }],
+      display: animationMode.value === 'Stand' ? 'flex' : 'none',
+    };
+  });
 
   // ------------------------- Render Functions -------------------------
 
-  const renderAddButton = () => {
-    const isPressed = useSharedValue<boolean>(false);
-    const iconRotation = useSharedValue<number>(0);
-    const isIconVisible = useSharedValue<boolean>(true);
-
-    // ------------------------- Handlers -------------------------
-
-    const handlePress = () => {
-      //navigation.navigate('Note');
-      isPressed.value = true;
-      iconRotation.value = withRepeat(withTiming(359, { duration: 600 }), 2, true, () => {
-        isPressed.value = false;
-        isIconVisible.value = false;
-      });
-    };
-
-    const handleEndAnimation = () => {
-      navigation.navigate('Note');
-    };
-
-    // ------------------------- Animated Styles -------------------------
-
-    const rContainer = useAnimatedStyle(() => {
-      return {
-        opacity: withTiming(isPressed.value ? 0.7 : 1),
-        width: isIconVisible.value ? 70 : withTiming(SCREEN_WIDTH, { duration: 700 }),
-        height: isIconVisible.value
-          ? 80
-          : withTiming(SCREEN_HEIGHT, { duration: 700 }, (finished) => {
-              if (finished === true) {
-                runOnJS(handleEndAnimation)();
-              }
-            }),
-        right: isIconVisible.value ? 15 : withTiming(0),
-        bottom: isIconVisible.value ? 20 : withTiming(0),
-      };
-    });
-
-    const rIcon = useAnimatedStyle(() => {
-      return {
-        transform: [{ rotateZ: `${iconRotation.value}deg` }],
-        display: isIconVisible.value ? 'flex' : 'none',
-      };
-    });
-
-    // ------------------------- Render Functions -------------------------
-
-    return (
+  return (
+    <View style={[StyleSheet.absoluteFill, styles.background]}>
       <TouchableWithoutFeedback onPress={handlePress}>
         <Animated.View
           style={[styles.addButton, { backgroundColor: APP_THEMES[THEME].secondary }, rContainer]}
@@ -80,10 +147,8 @@ const HomeScreen: React.FC = () => {
           <AnimatedIcon name="md-add" size={50} color={APP_THEMES[THEME].primary} style={rIcon} />
         </Animated.View>
       </TouchableWithoutFeedback>
-    );
-  };
-
-  return <View style={[StyleSheet.absoluteFill, styles.background]}>{renderAddButton()}</View>;
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
