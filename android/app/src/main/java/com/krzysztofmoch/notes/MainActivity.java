@@ -1,4 +1,4 @@
-package com.initapp.krzysztofmoch;
+package com.krzysztofmoch.notes;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "initApp";
+    return "Notes";
   }
 
   @Override
