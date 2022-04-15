@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
+import { View, Text, BackHandler } from 'react-native';
 import React from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 
-const NoteScreen = () => {
+const NoteScreen = ({ navigation, route }) => {
+  // ------------------------- Render Functions -------------------------
   return (
-    // ------------------------- Render Functions -------------------------
-
     <View>
       <Text>Note Screen</Text>
     </View>
