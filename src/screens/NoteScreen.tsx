@@ -1,14 +1,20 @@
-import { View, Text, BackHandler } from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import { MainNavigationParamList } from '../navigation/MainNavigation';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import APP_COLORS from '../common/colors';
 
-const NoteScreen = ({ navigation, route }) => {
+type NoteScreenProps = NativeStackScreenProps<MainNavigationParamList, 'Note'>;
+
+const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
   // ------------------------- Render Functions -------------------------
+
   return (
-    <View>
-      <Text>Note Screen</Text>
+    <View style={{ backgroundColor: APP_COLORS.black }}>
+      <Text>Note Screen - {route.params.title}</Text>
     </View>
   );
 };
 
+export type { NoteScreenProps };
 export default NoteScreen;

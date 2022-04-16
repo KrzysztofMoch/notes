@@ -8,7 +8,13 @@ import {
 import HomeScreen from '../screens/HomeScreen';
 import NoteScreen from '../screens/NoteScreen';
 
-const Stack = createNativeStackNavigator();
+type MainNavigationParamList = {
+  Home: undefined;
+  Note: { title: string; text: string };
+  Settings: undefined;
+};
+
+const Stack = createNativeStackNavigator<MainNavigationParamList>();
 
 const MainNavigation = () => (
   <NavigationContainer>
@@ -27,4 +33,5 @@ const noteScreen: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
+export type { MainNavigationParamList };
 export default MainNavigation;
