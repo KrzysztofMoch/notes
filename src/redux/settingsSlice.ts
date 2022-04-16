@@ -3,10 +3,12 @@ import { APP_THEMES_TYPE } from "../common/themes";
 
 interface SettingsSliceType {
   theme: APP_THEMES_TYPE;
+  savedTheme: APP_THEMES_TYPE;
 }
 
 const initialState = {
     theme: 'BLUE',
+    savedTheme: 'BLUE',
 } as SettingsSliceType
 
 const settingsSlice = createSlice({
