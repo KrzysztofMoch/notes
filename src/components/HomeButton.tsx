@@ -155,7 +155,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       <Animated.View
         style={[
           {
-            backgroundColor: APP_THEMES[THEME].secondary,
+            backgroundColor: APP_THEMES[THEME].primary,
             ...GLOBAL_STYLES.flexCenter,
             position: 'absolute',
             borderRadius: 30,
@@ -167,7 +167,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
         <AnimatedIcon
           name={ICON_NAME}
           size={ICON_SIZE}
-          color={APP_THEMES[THEME].primary}
+          color={APP_THEMES[THEME].secondary}
           style={rIcon}
         />
       </Animated.View>
