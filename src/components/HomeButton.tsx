@@ -11,9 +11,11 @@ import Animated, {
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import APP_THEMES, { APP_THEMES_TYPE } from '../common/themes';
+import APP_THEMES from '../common/themes';
 import GLOBAL_STYLES from '../common/globalStyles';
 import AnimationMode from '../types/AnimationMode';
+import { useSelector } from 'react-redux';
+import { RootReducer } from '../redux/store';
 
 interface HomeButtonProps {
   style: ViewStyle;
@@ -22,7 +24,6 @@ interface HomeButtonProps {
   navigateTo: string;
   iconName: string;
   iconSize: number;
-  theme: APP_THEMES_TYPE;
   animationMode: SharedValue<AnimationMode>;
 }
 
@@ -35,13 +36,16 @@ const HomeButton: React.FC<HomeButtonProps> = ({
   navigateTo,
   iconName: ICON_NAME,
   iconSize: ICON_SIZE,
-  theme: THEME,
   animationMode,
 }) => {
   const navigation = useNavigation();
 
   const isPressed = useSharedValue<boolean>(false);
   const iconRotation = useSharedValue<number>(0);
+
+  // ------------------------- Utilities -------------------------
+
+  const SETTINGS = useSelector((state: RootReducer) => state.settings);
 
   // ------------------------- Handlers -------------------------
 
@@ -155,7 +159,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       <Animated.View
         style={[
           {
-            backgroundColor: APP_THEMES[THEME].primary,
+            backgroundColor: APP_THEMES[SETTINGS.theme].primary,
             ...GLOBAL_STYLES.flexCenter,
             position: 'absolute',
             borderRadius: 30,
@@ -167,7 +171,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
         <AnimatedIcon
           name={ICON_NAME}
           size={ICON_SIZE}
-          color={APP_THEMES[THEME].secondary}
+          color={APP_THEMES[SETTINGS.theme].secondary}
           style={rIcon}
         />
       </Animated.View>

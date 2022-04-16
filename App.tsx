@@ -8,11 +8,11 @@ import store from './src/redux/store';
 
 const App = () => (
   <View style={StyleSheet.absoluteFill}>
-    {/* <Provider store={store}> */}
-    <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-      <MainNavigation />
-    </GestureHandlerRootView>
-    {/* </Provider> */}
+    <Provider store={store}>
+      <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+        <MainNavigation />
+      </GestureHandlerRootView>
+    </Provider>
   </View>
 );
 
