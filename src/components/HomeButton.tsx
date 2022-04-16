@@ -18,10 +18,10 @@ import { useSelector } from 'react-redux';
 import { RootReducer } from '../redux/store';
 
 interface HomeButtonProps {
-  style: ViewStyle;
   size: { width: number; height: number };
   position: { bottom: number; right: number };
   navigateTo: string;
+  navigationParams?: any | undefined;
   iconName: string;
   iconSize: number;
   animationMode: SharedValue<AnimationMode>;
@@ -34,6 +34,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
   size: SIZE,
   position: POSITION,
   navigateTo,
+  navigationParams,
   iconName: ICON_NAME,
   iconSize: ICON_SIZE,
   animationMode,
@@ -71,7 +72,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       isPressed.value = false;
     } else if (animationMode.value === 'MoveOut') {
       //@ts-ignore
-      navigation.navigate(navigateTo);
+      navigation.navigate(navigateTo, { navigationParams });
       isPressed.value = false;
     }
   };
