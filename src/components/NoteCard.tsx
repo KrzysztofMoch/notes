@@ -1,7 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  Easing,
+  SharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
@@ -37,7 +43,10 @@ const NoteCard: React.FC<NoteCardProps> = ({ data, index, translateY }) => {
 
   const rCard = useAnimatedStyle(() => {
     return {
-      top: translateY.value + PAGE_OFFSET,
+      top: withSequence(
+        withTiming(0, { duration: 0 }),
+        withTiming(translateY.value + PAGE_OFFSET, { duration: 400 }),
+      ),
     };
   });
 
