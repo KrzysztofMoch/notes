@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import Animated, {
   runOnJS,
@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import APP_THEMES from '../common/themes';
-import GLOBAL_STYLES from '../common/globalStyles';
 import AnimationMode from '../types/AnimationMode';
 import { useSelector } from 'react-redux';
 import { RootReducer } from '../redux/store';
@@ -20,11 +19,9 @@ import { RootReducer } from '../redux/store';
 interface HomeButtonProps {
   size: { width: number; height: number };
   position: { bottom: number; right: number };
-  navigateTo: string;
-  navigationParams?: any | undefined;
   iconName: string;
   iconSize: number;
-  animationMode: SharedValue<AnimationMode>;
+  onPress: () => void;
 }
 
 const AnimatedIcon = Animated.createAnimatedComponent(Icon);
@@ -33,20 +30,28 @@ const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } = Dimensions.get('screen');
 const HomeButton: React.FC<HomeButtonProps> = ({
   size: SIZE,
   position: POSITION,
-  navigateTo,
-  navigationParams,
   iconName: ICON_NAME,
   iconSize: ICON_SIZE,
-  animationMode,
+  onPress,
 }) => {
   const navigation = useNavigation();
 
+  const animationMode = useSharedValue<AnimationMode>('Stand');
   const isPressed = useSharedValue<boolean>(false);
   const iconRotation = useSharedValue<number>(0);
 
   // ------------------------- Utilities -------------------------
 
   const SETTINGS = useSelector((state: RootReducer) => state.settings);
+
+  // do animation when back from NoteScreen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      animationMode.value = 'MoveIn';
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   // ------------------------- Handlers -------------------------
 
@@ -71,8 +76,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       animationMode.value = 'Stand';
       isPressed.value = false;
     } else if (animationMode.value === 'MoveOut') {
-      //@ts-ignore
-      navigation.navigate(navigateTo, { navigationParams });
+      onPress();
       isPressed.value = false;
     }
   };
@@ -137,7 +141,6 @@ const HomeButton: React.FC<HomeButtonProps> = ({
     };
 
     return {
-      opacity: withTiming(isPressed.value ? 0.7 : 1),
       width: getWidth(),
       height: getHeight(),
       right: getRightPosition(),
@@ -161,7 +164,8 @@ const HomeButton: React.FC<HomeButtonProps> = ({
         style={[
           {
             backgroundColor: APP_THEMES[SETTINGS.theme].primary,
-            ...GLOBAL_STYLES.flexCenter,
+            justifyContent: 'center',
+            alignItems: 'center',
             position: 'absolute',
             borderRadius: 30,
             overflow: 'hidden',
