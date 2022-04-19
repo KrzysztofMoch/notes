@@ -11,6 +11,7 @@
     "format": "prettier --check ./src"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.3",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.1",
     "@reduxjs/toolkit": "^1.8.1",
@@ -23,6 +24,7 @@
     "react-native-screens": "^3.13.1",
     "react-native-vector-icons": "^9.1.0",
     "react-redux": "^7.2.8",
+    "redux-persist": "^6.0.0",
     "rn-local-authentication": "^1.2.5"
   },
   "devDependencies": {
@@ -32,6 +34,7 @@
     "@types/react": "^17.0.43",
     "@types/react-native": "^0.67.3",
     "@types/react-native-vector-icons": "^6.4.10",
+    "@types/redux-persist": "^4.3.1",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
     "babel-jest": "^26.6.3",
