@@ -10,7 +10,7 @@ import NoteScreen from '../screens/NoteScreen';
 
 type MainNavigationParamList = {
   Home: undefined;
-  Note: { title: string; text: string };
+  Note: { title: string; text: string; id: number | undefined; isPrivacyMode: boolean };
   Settings: undefined;
 };
 
