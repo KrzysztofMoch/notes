@@ -43,9 +43,9 @@ const dataSlice = createSlice({
     removeNote(state, action: PayloadAction<number>){
       try{
         const index = state.notes.map(note => note.id).indexOf(action.payload);
-        const newData = state.notes.splice(index, 1);
-
-        state.notes = newData;
+        state.notes.splice(index, 1);
+        
+        return state;
       }
       catch(ex) {
         console.warn('filed remove note with id', action.payload)
@@ -54,9 +54,9 @@ const dataSlice = createSlice({
     removePrivateNote(state, action: PayloadAction<number>){
       try{
         const index = state.privateNotes.map(note => note.id).indexOf(action.payload);
-        const newData = state.privateNotes.splice(index, 1);
+        state.privateNotes.splice(index, 1);
 
-        state.privateNotes = newData;
+        return state;
       }
       catch(ex) {
         console.warn('filed remove note with id', action.payload)
