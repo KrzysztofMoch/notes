@@ -15,7 +15,7 @@ import APP_THEMES from '../common/themes';
 import { RootReducer } from '../redux/store';
 
 interface NoteCardProps {
-  data: { title: string; text: string };
+  data: { title: string; text: string; id: number };
   index: number;
   translateY: SharedValue<number>;
 }
@@ -30,23 +30,20 @@ const NoteCard: React.FC<NoteCardProps> = ({ data, index, translateY }) => {
 
   // ------------------------- Utilities -------------------------
 
-  const SETTINGS = useSelector((state: RootReducer) => state.settings);
+  const { settings: SETTINGS, data: DATA } = useSelector((state: RootReducer) => state);
 
   // ------------------------- Handlers
 
   const handlePress = () => {
     //@ts-ignore
-    navigation.navigate('Note', { title: data.title, text: data.text });
+    navigation.navigate('Note', { ...data, isPrivacyMode: SETTINGS.theme === 'PRIVATE' });
   };
 
   // ------------------------- Animated Styles -------------------------
 
   const rCard = useAnimatedStyle(() => {
     return {
-      top: withSequence(
-        withTiming(0, { duration: 0 }),
-        withTiming(translateY.value + PAGE_OFFSET, { duration: 400 }),
-      ),
+      top: translateY.value + PAGE_OFFSET,
     };
   });
 

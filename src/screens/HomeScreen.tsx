@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, Alert, Text } from 'react-native';
 import Animated, {
   runOnJS,
@@ -24,9 +24,8 @@ import { setTheme } from '../redux/settingsSlice';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const animationMode = useSharedValue<AnimationMode>('Stand');
 
-  const NOTES_COUNT = useSharedValue<number>(1);
+  const NOTES_COUNT = useSharedValue<number>(0);
   const showPrivacyIcon = useSharedValue<boolean>(false);
   const [isPrivacyMode, setIsPrivacyMode] = useState<boolean>(false);
 
@@ -50,21 +49,11 @@ const HomeScreen = () => {
   */
   useEffect(() => {
     NOTES_COUNT.value = isPrivacyMode ? PRIVATE_NOTES.length : NOTES.length;
-  }, [NOTES]);
+  }, [NOTES, PRIVATE_NOTES]);
 
   useEffect(() => {
     dispatch(setTheme(isPrivacyMode ? 'PRIVATE' : SETTINGS.savedTheme));
-    console.log('PM', isPrivacyMode);
   }, [isPrivacyMode]);
-
-  // do animation when back from NoteScreen
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      animationMode.value = 'MoveIn';
-    });
-
-    return unsubscribe;
-  }, [navigation]);
 
   // ------------------------- Handlers -------------------------
 
@@ -73,7 +62,6 @@ const HomeScreen = () => {
     scrollY.value = 0;
 
     if (!isPrivacyMode) {
-      console.log(isPrivacyMode);
       LocalAuthentication.authenticateAsync({
         reason: 'Please authorize yourself to continue',
       })
@@ -148,23 +136,29 @@ const HomeScreen = () => {
     );
   };
 
-  const renderAddButton = () => (
-    <HomeButton
-      size={{
-        width: 70,
-        height: 80,
-      }}
-      position={{
-        bottom: 15,
-        right: 15,
-      }}
-      navigateTo={'Note'}
-      navigationParams={{ title: 'title', text: '' }}
-      iconSize={50}
-      iconName={'md-add'}
-      animationMode={animationMode}
-    />
-  );
+  const renderAddButton = () => {
+    return (
+      <HomeButton
+        size={{
+          width: 70,
+          height: 80,
+        }}
+        position={{
+          bottom: 15,
+          right: 15,
+        }}
+        onPress={() => {
+          navigation.navigate('Note', {
+            title: 'Title',
+            text: '',
+            isPrivacyMode,
+          });
+        }}
+        iconSize={50}
+        iconName={'md-add'}
+      />
+    );
+  };
 
   const renderSettingsButton = () => (
     <HomeButton
@@ -176,10 +170,11 @@ const HomeScreen = () => {
         bottom: 110,
         right: 15,
       }}
-      navigateTo={'Note'}
+      onPress={() => {
+        navigation.navigate('');
+      }}
       iconName={'settings'}
       iconSize={25}
-      animationMode={animationMode}
     />
   );
 
