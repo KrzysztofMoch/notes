@@ -22,6 +22,7 @@ import { RootReducer } from '../redux/store';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import APP_COLORS from '../common/colors';
 import { removeNote, removePrivateNote } from '../redux/dataSlice';
+import getAppTheme from '../common/themes';
 
 interface NoteCardProps {
   data: { title: string; text: string; id: number };
@@ -53,6 +54,12 @@ const NoteCard: React.FC<NoteCardProps> = ({ data, index, translateY }) => {
 
   const { settings: SETTINGS } = useSelector((state: RootReducer) => state);
   const dispatch = useDispatch();
+
+  const {
+    primary: PRIMARY_COLOR,
+    secondary: SECONDARY_COLOR,
+    fontColor: FONT_COLOR,
+  } = getAppTheme(SETTINGS.theme);
 
   // ------------------------- Handlers -------------------------
 
@@ -135,21 +142,17 @@ const NoteCard: React.FC<NoteCardProps> = ({ data, index, translateY }) => {
     <TouchableOpacity
       style={{
         overflow: 'hidden',
-        backgroundColor: APP_THEMES[SETTINGS.theme].secondary,
+        backgroundColor: SECONDARY_COLOR,
         width: '100%',
         height: '100%',
         borderRadius: 30,
       }}
       onPress={handlePress}
     >
-      <View style={[styles.titleContainer, { borderColor: APP_THEMES[SETTINGS.theme].primary }]}>
-        <Text style={[styles.title, , { color: APP_THEMES[SETTINGS.theme].fontColor }]}>
-          {data.title}
-        </Text>
+      <View style={[styles.titleContainer, { borderColor: PRIMARY_COLOR }]}>
+        <Text style={[styles.title, , { color: FONT_COLOR }]}>{data.title}</Text>
       </View>
-      <Text style={[styles.text, { color: APP_THEMES[SETTINGS.theme].fontColor }]}>
-        {data.text}
-      </Text>
+      <Text style={[styles.text, { color: FONT_COLOR }]}>{data.text}</Text>
     </TouchableOpacity>
   );
 

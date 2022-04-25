@@ -11,6 +11,7 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { saveNote, savePrivateNote } from '../redux/dataSlice';
 import { useSharedValue } from 'react-native-reanimated';
+import getAppTheme from '../common/themes';
 
 type NoteScreenProps = NativeStackScreenProps<MainNavigationParamList, 'Note'>;
 
@@ -24,6 +25,8 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
 
   const { settings: SETTINGS, data: DATA } = useSelector((state: RootReducer) => state);
   const dispatch = useDispatch();
+
+  const { primary: PRIMARY_COLOR, secondary: SECONDARY_COLOR } = getAppTheme(SETTINGS.theme);
 
   const generateId: () => number = () => {
     const map = (isPrivacyMode ? DATA.privateNotes : DATA.notes).map((note) => note.id);
@@ -68,21 +71,21 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
     <View style={styles.background}>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={handleIconPress}>
-          <Icon size={48} name="ios-arrow-back-circle" color={APP_THEMES[SETTINGS.theme].primary} />
+          <Icon size={48} name="ios-arrow-back-circle" color={PRIMARY_COLOR} />
         </TouchableOpacity>
         <TextInput
-          style={[styles.title, { borderColor: APP_THEMES[SETTINGS.theme].primary }]}
+          style={[styles.title, { borderColor: PRIMARY_COLOR }]}
           numberOfLines={1}
           allowFontScaling={false}
           onChangeText={setTitle}
           value={title}
           selectTextOnFocus={true}
-          selectionColor={APP_THEMES[SETTINGS.theme].secondary}
+          selectionColor={SECONDARY_COLOR}
           scrollEnabled
         />
       </View>
       <TextInput
-        style={[styles.text, { borderColor: APP_THEMES[SETTINGS.theme].secondary }]}
+        style={[styles.text, { borderColor: SECONDARY_COLOR }]}
         multiline
         allowFontScaling
         onChangeText={setText}

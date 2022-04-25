@@ -1,21 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { APP_THEMES_TYPE } from "../common/themes";
+import { APP_THEMES_NAME } from "../common/themes";
 
 interface SettingsSliceType {
-  theme: APP_THEMES_TYPE;
-  savedTheme: APP_THEMES_TYPE;
+  theme: APP_THEMES_NAME;
+  savedTheme: APP_THEMES_NAME;
+  customTheme: {
+    enable: boolean;
+    primaryColor: string;
+    secondaryColor: string;
+    fontColor: string;
+  }
 }
 
 const initialState = {
     theme: 'BLUE',
     savedTheme: 'BLUE',
+    customTheme: {
+      enable: false,
+      primaryColor: '',
+      secondaryColor: '',
+      fontColor: '',
+    }
 } as SettingsSliceType
 
 const settingsSlice = createSlice({
   name: 'settings',
   initialState,
   reducers: {
-    setTheme(state, action: PayloadAction<APP_THEMES_TYPE>){
+    setTheme(state, action: PayloadAction<APP_THEMES_NAME>){
       state.theme = action.payload;
     }
   }

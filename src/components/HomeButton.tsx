@@ -15,6 +15,7 @@ import APP_THEMES from '../common/themes';
 import AnimationMode from '../types/AnimationMode';
 import { useSelector } from 'react-redux';
 import { RootReducer } from '../redux/store';
+import getAppTheme from '../common/themes';
 
 interface HomeButtonProps {
   size: { width: number; height: number };
@@ -43,6 +44,12 @@ const HomeButton: React.FC<HomeButtonProps> = ({
   // ------------------------- Utilities -------------------------
 
   const SETTINGS = useSelector((state: RootReducer) => state.settings);
+
+  const {
+    primary: PRIMARY_COLOR,
+    secondary: SECONDARY_COLOR,
+    fontColor: FONT_COLOR,
+  } = getAppTheme(SETTINGS.theme);
 
   // do animation when back from NoteScreen
   useEffect(() => {
@@ -163,7 +170,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
       <Animated.View
         style={[
           {
-            backgroundColor: APP_THEMES[SETTINGS.theme].primary,
+            backgroundColor: PRIMARY_COLOR,
             justifyContent: 'center',
             alignItems: 'center',
             position: 'absolute',
@@ -173,12 +180,7 @@ const HomeButton: React.FC<HomeButtonProps> = ({
           rContainer,
         ]}
       >
-        <AnimatedIcon
-          name={ICON_NAME}
-          size={ICON_SIZE}
-          color={APP_THEMES[SETTINGS.theme].secondary}
-          style={rIcon}
-        />
+        <AnimatedIcon name={ICON_NAME} size={ICON_SIZE} color={SECONDARY_COLOR} style={rIcon} />
       </Animated.View>
     </TouchableWithoutFeedback>
   );
