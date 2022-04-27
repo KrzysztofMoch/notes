@@ -7,6 +7,8 @@ import {
 
 import HomeScreen from '../screens/HomeScreen';
 import NoteScreen from '../screens/NoteScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import APP_COLORS from '../common/colors';
 
 type MainNavigationParamList = {
   Home: undefined;
@@ -19,18 +21,24 @@ const Stack = createNativeStackNavigator<MainNavigationParamList>();
 const MainNavigation = () => (
   <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={HomeScreen} options={homeScreenOptions} />
-      <Stack.Screen name="Note" component={NoteScreen} options={noteScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} options={defaultScreenOptions} />
+      <Stack.Screen name="Note" component={NoteScreen} options={defaultScreenOptions} />
+      <Stack.Screen name="Settings" component={SettingsScreen} options={settingsScreenOptions} />
     </Stack.Navigator>
   </NavigationContainer>
 );
 
-const homeScreenOptions: NativeStackNavigationOptions = {
+const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
 };
 
-const noteScreen: NativeStackNavigationOptions = {
-  headerShown: false,
+const settingsScreenOptions: NativeStackNavigationOptions = {
+  headerShown: true,
+  headerStyle: {
+    backgroundColor: APP_COLORS.black,
+  },
+  headerTintColor: APP_COLORS.white,
+  headerTitleAlign: 'center',
 };
 
 export type { MainNavigationParamList };
