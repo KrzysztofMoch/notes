@@ -49,7 +49,7 @@ const HomeScreen = () => {
   */
   useEffect(() => {
     NOTES_COUNT.value = isPrivacyMode ? PRIVATE_NOTES.length : NOTES.length;
-  }, [NOTES, PRIVATE_NOTES]);
+  }, [NOTES.length, PRIVATE_NOTES.length]);
 
   useEffect(() => {
     dispatch(setTheme(isPrivacyMode ? 'PRIVATE' : SETTINGS.savedTheme));
@@ -148,6 +148,7 @@ const HomeScreen = () => {
           right: 15,
         }}
         onPress={() => {
+          //@ts-ignore
           navigation.navigate('Note', {
             title: 'Title',
             text: '',
@@ -171,7 +172,8 @@ const HomeScreen = () => {
         right: 15,
       }}
       onPress={() => {
-        navigation.navigate('');
+        //@ts-ignore
+        navigation.navigate('Settings');
       }}
       iconName={'settings'}
       iconSize={25}

@@ -169,25 +169,27 @@ const HomeButton: React.FC<HomeButtonProps> = ({
     <TouchableWithoutFeedback onPress={handlePress}>
       <Animated.View
         style={[
+          styles.button,
           {
-            backgroundColor: PRIMARY_COLOR,
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'absolute',
-            borderRadius: 30,
-            overflow: 'hidden',
+            backgroundColor: SECONDARY_COLOR,
           },
           rContainer,
         ]}
       >
-        <AnimatedIcon name={ICON_NAME} size={ICON_SIZE} color={SECONDARY_COLOR} style={rIcon} />
+        <AnimatedIcon name={ICON_NAME} size={ICON_SIZE} color={PRIMARY_COLOR} style={rIcon} />
       </Animated.View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  addButton: {},
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    borderRadius: 30,
+    overflow: 'hidden',
+  },
 });
 
 export default HomeButton;

@@ -71,21 +71,21 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
     <View style={styles.background}>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={handleIconPress}>
-          <Icon size={48} name="ios-arrow-back-circle" color={PRIMARY_COLOR} />
+          <Icon size={48} name="ios-arrow-back-circle" color={SECONDARY_COLOR} />
         </TouchableOpacity>
         <TextInput
-          style={[styles.title, { borderColor: PRIMARY_COLOR }]}
+          style={[styles.title, { borderColor: SECONDARY_COLOR }]}
           numberOfLines={1}
           allowFontScaling={false}
           onChangeText={setTitle}
           value={title}
           selectTextOnFocus={true}
-          selectionColor={SECONDARY_COLOR}
+          selectionColor={PRIMARY_COLOR}
           scrollEnabled
         />
       </View>
       <TextInput
-        style={[styles.text, { borderColor: SECONDARY_COLOR }]}
+        style={[styles.text, { borderColor: PRIMARY_COLOR }]}
         multiline
         allowFontScaling
         onChangeText={setText}

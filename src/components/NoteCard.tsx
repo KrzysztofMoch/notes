@@ -142,14 +142,14 @@ const NoteCard: React.FC<NoteCardProps> = ({ data, index, translateY }) => {
     <TouchableOpacity
       style={{
         overflow: 'hidden',
-        backgroundColor: SECONDARY_COLOR,
+        backgroundColor: PRIMARY_COLOR,
         width: '100%',
         height: '100%',
         borderRadius: 30,
       }}
       onPress={handlePress}
     >
-      <View style={[styles.titleContainer, { borderColor: PRIMARY_COLOR }]}>
+      <View style={[styles.titleContainer, { borderColor: SECONDARY_COLOR }]}>
         <Text style={[styles.title, , { color: FONT_COLOR }]}>{data.title}</Text>
       </View>
       <Text style={[styles.text, { color: FONT_COLOR }]}>{data.text}</Text>
