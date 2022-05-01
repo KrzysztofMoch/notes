@@ -23,6 +23,11 @@ const settingsSlice = createSlice({
   initialState,
   reducers: {
     setTheme(state, action: PayloadAction<APP_THEMES_NAME>){
+      if(state.theme === 'PRIVATE') {
+        state.savedTheme = action.payload;
+        return;
+      }
+    
       state.theme = action.payload;
     },
     setCustomThemePrimary(state, action: PayloadAction<string>){
