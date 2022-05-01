@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
   credecionalsButtonText: {
     fontSize: 16,
     marginLeft: 8,
+    color: APP_COLORS.white,
   },
   customThemeContent: {
     height: 270,

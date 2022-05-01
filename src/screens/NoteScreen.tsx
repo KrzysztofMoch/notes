@@ -26,7 +26,11 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
   const { settings: SETTINGS, data: DATA } = useSelector((state: RootReducer) => state);
   const dispatch = useDispatch();
 
-  const { primary: PRIMARY_COLOR, secondary: SECONDARY_COLOR } = getAppTheme(SETTINGS.theme);
+  const {
+    primary: PRIMARY_COLOR,
+    secondary: SECONDARY_COLOR,
+    fontColor: FONT_COLOR,
+  } = getAppTheme(SETTINGS.theme);
 
   const generateId: () => number = () => {
     const map = (isPrivacyMode ? DATA.privateNotes : DATA.notes).map((note) => note.id);
@@ -74,7 +78,7 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
           <Icon size={48} name="ios-arrow-back-circle" color={SECONDARY_COLOR} />
         </TouchableOpacity>
         <TextInput
-          style={[styles.title, { borderColor: SECONDARY_COLOR }]}
+          style={[styles.title, { borderColor: SECONDARY_COLOR, color: FONT_COLOR }]}
           numberOfLines={1}
           allowFontScaling={false}
           onChangeText={setTitle}
@@ -85,7 +89,7 @@ const NoteScreen: React.FC<NoteScreenProps> = ({ navigation, route }) => {
         />
       </View>
       <TextInput
-        style={[styles.text, { borderColor: PRIMARY_COLOR }]}
+        style={[styles.text, { borderColor: PRIMARY_COLOR, color: FONT_COLOR }]}
         multiline
         allowFontScaling
         onChangeText={setText}

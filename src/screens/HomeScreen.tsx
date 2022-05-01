@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
   privacyIconText: {
     fontSize: 18,
     fontWeight: '500',
+    color: APP_COLORS.white,
   },
 });
 
